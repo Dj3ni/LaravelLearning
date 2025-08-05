@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
@@ -20,18 +21,18 @@ Route::get('/', function (): View {
 });
 
 Route::prefix('/blog')->name('blog.')->group(function (){    
-	Route::get('/',function (){            
-		return [            
-			"link" => \route('show', ["slug" =>"article", "id"=>12])        
-		];    
+	Route::get('/',function (){
+		
+		return Post::paginate(25);   
 	})    
 	->name('index');
 	
-    Route::get('/{slug}-{id}', function(string $slug, string $id) {            
-        return [                
-            "slug" => $slug,                
-            "id" => $id            
-		];    
+    Route::get('/{slug}-{id}', function(string $slug, string $id) {
+		$post = Post::findOrFail($id);
+		if($post->slug !== $slug){
+			return to_route('blog.show',['slug' => $post->slug, 'id' => $id]);
+		}
+		return $post;               
 	})    
 	->where([        
 		"id" => '[0-9]+',        
