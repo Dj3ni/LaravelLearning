@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogFilterRequest;
 use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-
 
 class BlogController extends Controller
 {
