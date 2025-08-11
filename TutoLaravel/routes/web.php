@@ -24,8 +24,17 @@ Route::get('/', function (): View {
 Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(function (){    
 	Route::get('/','index')   
 	->name('index');
+	// Create
+	Route::get('/new','create')
+	->name('create');
+	Route::post('/new','store');
+	//Edit
+	Route::get('/{post}/edit','edit')
+	->name('edit');
+	Route::post('/{post}/edit', 'update');
 	
-    Route::get('/{slug}-{id}', 'show')    
+	//Get
+    Route::get('/{slug}-{post}', 'show')    
 	->where([        
 		"id" => '[0-9]+',        
 		"slug" => '[a-z0-9\-]+'     

@@ -9,7 +9,7 @@
         <article>
             <h2>{{ $post->title }}</h2>
             <p>{{ $post->content }}
-                <a href="{{ route('blog.show',['slug'=>$post->slug, 'id' => $post->id])}}">
+                <a href="{{ route('blog.show',['slug'=>$post->slug, 'post' => $post])}}">
                     Read More...
                 </a>
             </p>
