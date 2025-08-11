@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,6 +24,7 @@ class FormPostRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->request);
         return [
             'title'=>[
                 'required',
@@ -36,7 +38,18 @@ class FormPostRequest extends FormRequest
             ],
             'content' =>[
                 'required',
-            ]
+            ],
+            'category_id' =>[
+                "required",
+                'exists:categories,id',
+            ],
+            'tags' => [
+                'array',
+            ],
+            'tags.*' => [
+                'integer',
+                Rule::exists(Tag::class, 'id'),
+            ],
         ];
     }
 

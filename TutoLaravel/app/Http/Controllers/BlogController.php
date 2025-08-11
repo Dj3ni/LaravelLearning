@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormPostRequest;
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -14,9 +16,12 @@ class BlogController extends Controller
 {
     public function index(): View
     {
+        $categories = Category::all();
+
         return view('blog.index', [
-            'posts' => Post::paginate(2),
-        ]);
+            'posts' => Post::with('tags','category')->paginate(5),
+            'categories'=> $categories,
+        ]); 
     }
 
     public function show(string $slug, Post $post): RedirectResponse | View
@@ -24,8 +29,10 @@ class BlogController extends Controller
         if($post->slug !== $slug){
 			return to_route('blog.show',['slug' => $post->slug, 'post' => $post]);
 		}
+        $category = $post->category;
 		return view('blog.show',[
             'post'=> $post,
+            'category'=> $category,
         ]);  
     }
 
@@ -34,6 +41,8 @@ class BlogController extends Controller
         $post = new Post();
         return view('blog.create', [
             'post' => $post,
+            'categories' => Category::all(),
+            'tags' => Tag::all(),
         ]);
     }
 
@@ -58,14 +67,17 @@ class BlogController extends Controller
     public function edit(Post $post)
     {
         return view('blog.edit',[
-            "post"=> $post
+            "post"=> $post,
+            'categories' => Category::select('id','name')->get(),
+            'tags' => Tag::select('id','name')->get(),
         ]);
     }
 
     public function update(Post $post, FormPostRequest $request)
     {
-        $post->update($request->validated());
-
+        $post->update($request->safe()->except(['tags']));
+        $post->tags()->sync($request->validated('tags') ?? []);
+        
         return redirect()
         ->route('blog.show',[
             'slug' => $post->slug,
@@ -73,4 +85,12 @@ class BlogController extends Controller
         ])
         ->with('success','The article has been correctly modified');
     }
+
+    public function category(Category $category){
+
+        return view('blog.category',[
+            'category'=>$category,
+        ]);
+    }
 }
+

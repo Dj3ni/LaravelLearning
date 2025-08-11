@@ -32,12 +32,18 @@ Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(
 	Route::get('/{post}/edit','edit')
 	->name('edit');
 	Route::post('/{post}/edit', 'update');
-	
+
 	//Get
     Route::get('/{slug}-{post}', 'show')    
 	->where([        
 		"id" => '[0-9]+',        
 		"slug" => '[a-z0-9\-]+'     
-	])    
+	])
 	->name('show');
+	
+	Route::get('/{category}', 'category')    
+	->name('category')
+	->where([
+		"id" => '[0-9]+', 
+	]);
 });

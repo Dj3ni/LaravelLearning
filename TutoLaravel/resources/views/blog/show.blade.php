@@ -6,8 +6,19 @@
 
     <article>
         <h1>{{ $post->title }}</h1>
-        <p>{{ $post->content }}
+        <p class="small">{{ $category->name ?? 'No category'}}</p>
+        <p>Tags:
+            @if (!$post->tags->isEmpty())
+                @foreach ($post->tags as $tag)
+                    <span class="badge bg-secondary">{{ $tag->name }}</span> 
+                @endforeach
+            @else
+                No tag
+            @endif 
+            
         </p>
+        <p>{{ $post->content }}
+        </p> 
         <a href="{{ route('blog.edit',['post'=>$post])}}">Edit</a>
     </article>
 
