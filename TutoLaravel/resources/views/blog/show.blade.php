@@ -18,8 +18,13 @@
             
         </p>
         <p>{{ $post->content }}
-        </p> 
-        <a href="{{ route('blog.edit',['post'=>$post])}}">Edit</a>
+        </p>
+        <div>
+            <a href="{{ route('blog.edit',['post'=>$post])}}">Edit</a> |
+            <a href="{{ route('blog.remove',['post'=>$post])}}">Delete</a> |
+            <a href="{{ route('blog.index')}}">Back</a> 
+
+        </div>
     </article>
 
 @endsection

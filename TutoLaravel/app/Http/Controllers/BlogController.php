@@ -10,6 +10,7 @@ use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View as ViewView;
 use Symfony\Component\HttpFoundation\RedirectResponse as HttpFoundationRedirectResponse;
 
 class BlogController extends Controller
@@ -64,7 +65,7 @@ class BlogController extends Controller
         ->with('success', "Article created successfully!");
     }
 
-    public function edit(Post $post)
+    public function edit(Post $post): View
     {
         return view('blog.edit',[
             "post"=> $post,
@@ -73,7 +74,7 @@ class BlogController extends Controller
         ]);
     }
 
-    public function update(Post $post, FormPostRequest $request)
+    public function update(Post $post, FormPostRequest $request): RedirectResponse
     {
         $post->update($request->safe()->except(['tags']));
         $post->tags()->sync($request->validated('tags') ?? []);
@@ -84,6 +85,22 @@ class BlogController extends Controller
             'post' => $post,
         ])
         ->with('success','The article has been correctly modified');
+    }
+
+    public function remove(Post $post): View
+    {
+        return view('blog.delete', [
+            'post'=>$post
+        ]);
+    }
+
+    public function delete(Post $post): RedirectResponse
+    {
+        $post->delete();
+
+        return redirect()
+        ->route('blog.index')
+        ->with('success', "your article has been successfully removed");
     }
 
     public function category(Category $category){
