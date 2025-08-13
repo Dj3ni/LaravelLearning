@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title','Edit user')
+@section('title','Subscribe')
 
 @section('content')
     @include('user.form')
