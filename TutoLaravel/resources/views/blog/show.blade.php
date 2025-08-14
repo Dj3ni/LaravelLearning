@@ -17,13 +17,18 @@
             @endif 
             
         </p>
+        @if ($post->image)
+            <div>
+                <img src="{{Storage::url($post->image)}}" alt="{{$post->title}}">
+            </div>
+        @endif
+        
         <p>{{ $post->content }}
         </p>
         <div>
             <a href="{{ route('blog.edit',['post'=>$post])}}">Edit</a> |
             <a href="{{ route('blog.remove',['post'=>$post])}}">Delete</a> |
             <a href="{{ route('blog.index')}}">Back</a> 
-
         </div>
     </article>
 

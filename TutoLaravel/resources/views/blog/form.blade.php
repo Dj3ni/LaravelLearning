@@ -2,7 +2,7 @@
 @section('title', 'Edit Article')
 
 @section('content')
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         @csrf
         <div class='form-group'>
             <label for="title">Title</label>
@@ -83,6 +83,19 @@
                 {{ $message }}
             @enderror
         </div>
+        <div class="form-group">
+            <label for="image">Picture</label>
+            <input
+                type="file" 
+                name="image" 
+                id="image" 
+                class="form-control"
+                >
+            @error('upload')
+                {{ $message }}
+            @enderror
+        </div>
+
         <button type="submit" class="btn btn-primary">
             @if($post->id) 
                 Modify

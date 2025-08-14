@@ -50,6 +50,10 @@ class FormPostRequest extends FormRequest
                 'integer',
                 Rule::exists(Tag::class, 'id'),
             ],
+            'image'=>[
+                'image',
+                'max:2500',
+            ],
         ];
     }
 

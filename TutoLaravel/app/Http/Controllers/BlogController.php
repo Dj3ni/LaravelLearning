@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormPostRequest;
-use App\Models\Category;
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\FormPostRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -75,7 +76,8 @@ class BlogController extends Controller
 
     public function update(Post $post, FormPostRequest $request): RedirectResponse
     {
-        $post->update($request->safe()->except(['tags']));
+        $data = $this->extractData($request,$post);
+        $post->update(collect($data)->except(['tags'])->toArray());
         $post->tags()->sync($request->validated('tags') ?? []);
         
         return redirect()
@@ -95,6 +97,10 @@ class BlogController extends Controller
 
     public function delete(Post $post): RedirectResponse
     {
+        if($post->image){
+            Storage::disk('public')->delete($post->image);
+        }
+        
         $post->delete();
 
         return redirect()
@@ -107,6 +113,25 @@ class BlogController extends Controller
         return view('blog.category',[
             'category'=>$category,
         ]);
+    }
+
+    private function extractData(FormPostRequest $request, Post $post): array
+    {
+        $data = $request->validated();
+        
+        /** @var UploadedFile|null $picture */
+        $picture = $request->file('image');
+
+        if($post->image){
+            Storage::disk('public')->delete($post->image);
+        }
+
+        if($picture !== null && !$picture->getError()){
+            $picturePath = $picture->store('blog','public');
+            $data['image']= $picturePath;
+        }
+
+        return $data;
     }
 }
 
