@@ -20,13 +20,28 @@
                 </li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ auth()->user()->name ?? 'Guest' }}
+                    @auth
+                        {{ Auth::user()->name }}
+                    @endauth
+                    @guest
+                        Guest
+                    @endguest
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('auth.login')}}">Login</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    @guest
+                        <li><a class="dropdown-item" href="{{ route('auth.login')}}">Login</a></li>
+                        <li><a class="dropdown-item" href="#">Register</a></li>
+                    @endguest
+                    @auth
+                        <li>
+                            <form action="{{ route('auth.logout')}}" method="POST" class="nav-item">
+                                @method("delete")
+                                @csrf
+                                <button class="dropdown-item">Logout</button>
+                            </form>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('user.show',["user"=>Auth::user()->id])}}">Profile</a></li>
+                    @endauth
                 </ul>
                 </li>
 

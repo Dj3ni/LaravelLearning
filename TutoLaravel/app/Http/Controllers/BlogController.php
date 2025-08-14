@@ -10,8 +10,7 @@ use App\Models\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View as ViewView;
-use Symfony\Component\HttpFoundation\RedirectResponse as HttpFoundationRedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -47,7 +46,7 @@ class BlogController extends Controller
         ]);
     }
 
-    public function store(FormPostRequest $request): HttpFoundationRedirectResponse
+    public function store(FormPostRequest $request): RedirectResponse
     {
         $post = Post::create([
             'title'=> $request->input('title'),

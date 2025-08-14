@@ -24,6 +24,7 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('login', [AuthController::class, 'doLogin']);
+Route::delete('logout',[AuthController::class, 'logout'])->name('auth.logout');
 
 
 
@@ -48,11 +49,13 @@ Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(
 	->name('index');
 	// Create
 	Route::get('/new','create')
-	->name('create');
+	->name('create')
+	->middleware('auth');
 	Route::post('/new','store');
 	//Edit
 	Route::get('/{post}/edit','edit')
-	->name('edit');
+	->name('edit')
+	->middleware('auth');
 	Route::post('/{post}/edit', 'update');
 
 	//Get
@@ -66,7 +69,8 @@ Route::prefix('/blog')->name('blog.')->controller(BlogController::class)->group(
 	Route::get('/{post}/delete', 'remove')
 	->name('remove');
 	Route::post('/{post}/delete', 'delete')
-	->name('delete');
+	->name('delete')
+	->middleware('auth');
 
 	
 	Route::get('/{category}', 'category')    
