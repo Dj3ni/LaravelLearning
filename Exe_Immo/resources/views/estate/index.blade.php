@@ -4,6 +4,10 @@
 
 @section('content')
 
+    <button>
+        <a href="{{route('estate.new')}}">Add an estate</a>
+    </button>
+
     <div>This section will contain a filter form for the estates by 
         - squareMeters,
         - nbr rooms

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EstateController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::prefix('/estate')
+    ->name('estate.')
+    ->controller(EstateController::class)
+    ->group(function(){
+        //GET
+        Route::get('/','index')->name('index');
+        Route::get('/{estate}/detail', 'show')->name('show');
+        //POST
+        Route::get('/create','new')->name('new');
+        Route::post('/create','store');
+        //Edit
+        Route::get('/{estate}/edit', 'edit')->name('edit');
+        Route::post('/{estate}/edit','update');
+});

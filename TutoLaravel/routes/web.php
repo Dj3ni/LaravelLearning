@@ -27,7 +27,6 @@ Route::post('login', [AuthController::class, 'doLogin']);
 Route::delete('logout',[AuthController::class, 'logout'])->name('auth.logout');
 
 
-
 Route::prefix('/user')
 	->name('user.')
 	->controller(UserController::class)
