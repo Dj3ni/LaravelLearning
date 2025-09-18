@@ -30,4 +30,7 @@ Route::prefix('/estate')
         //Edit
         Route::get('/{estate}/edit', 'edit')->name('edit');
         Route::post('/{estate}/edit','update');
+        //Delete
+        Route::get('/{estate}/delete', 'delete')->name('delete');
+        Route::post('/{estate}/delete', 'remove');
 });

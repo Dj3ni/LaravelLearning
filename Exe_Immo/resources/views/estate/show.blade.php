@@ -20,5 +20,17 @@
 
     </ul>
 
+    <h2>{{$estate->title}}</h2>
+    <div>
+        <a href="{{route('estate.edit', ['estate'=>$estate])}}">Edit</a> |
+        <a href="{{route('estate.delete',['estate'=>$estate])}}">Delete</a> |
+        <a href="{{route('estate.index')}}">Back to Estates list</a>
+
+    </div>
+    <p>{{$estate->price}}</p>
+    <p>{{$estate->localisation}}</p>
+    <p>{{$estate->description}}</p>
+
+
     
 @endsection
