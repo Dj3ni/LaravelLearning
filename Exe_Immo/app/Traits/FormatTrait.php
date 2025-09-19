@@ -9,7 +9,7 @@ trait FormatTrait
     {
         //Replace ',' by '.'
         $value = str_replace(',', '.',$value);
-        return number_format((float)$value,$decimal,'.','');
+        return number_format((float)$value,$decimal,'.',' ');
     }
 }
 
